@@ -1,0 +1,7 @@
+.externalNativeBuild
+.classpath
+.settings
+.project
+.gradle
+.vscode
+build
