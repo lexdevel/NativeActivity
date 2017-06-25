@@ -10,6 +10,7 @@ include_directories(${ANDROID_NDK}/sources/android/native_app_glue)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+set(SRC ${SRC} cpp/GraphicsDevice.cpp)
 set(SRC ${SRC} cpp/Application.cpp)
 set(SRC ${SRC} cpp/main.cpp)
 
