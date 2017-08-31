@@ -1,5 +1,5 @@
 #ifndef ANDROIDAPP_H
-#define ANRDOIDAPP_H
+#define ANDROIDAPP_H
 
 #include <jni.h>
 #include <memory>
@@ -11,7 +11,7 @@
 class AndroidApp
 {
 private:
-    static std::unique_ptr<Application> s_instance;
+    static std::unique_ptr<AndroidApp> s_instance;
 private:
     struct android_app              *m_app;
     std::shared_ptr<GraphicsDevice>  m_graphicsDevice;
@@ -32,4 +32,4 @@ private:
     static int32_t onInputEvent(struct android_app *app, AInputEvent *inputEvent);
 };
 
-#endif // ANRDOIDAPP_H
+#endif // ANDROIDAPP_H

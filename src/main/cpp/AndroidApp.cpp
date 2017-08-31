@@ -1,6 +1,6 @@
 #include "AndroidApp.h"
 
-std::unique_ptr<Application> Application::s_instance = nullptr;
+std::unique_ptr<AndroidApp> AndroidApp::s_instance = nullptr;
 
 AndroidApp::AndroidApp(struct android_app *app)
     : m_app(app), m_graphicsDevice(new GraphicsDevice(app->window))
