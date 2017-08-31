@@ -53,8 +53,6 @@ void GraphicsDevice::finalize()
     this->m_display = EGL_NO_DISPLAY;
 }
 
-// void GraphicsDevice::validate
-
 bool GraphicsDevice::isPrepared() const
 {
     return (this->m_display != EGL_NO_DISPLAY &&
@@ -63,8 +61,5 @@ bool GraphicsDevice::isPrepared() const
 
 void GraphicsDevice::swapBuffer()
 {
-    if (this->isPrepared())
-    {
-        eglSwapBuffers(this->m_display, this->m_surface);
-    }
+    eglSwapBuffers(this->m_display, this->m_surface);
 }

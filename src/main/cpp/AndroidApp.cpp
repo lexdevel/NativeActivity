@@ -1,32 +1,28 @@
-#include "Application.h"
+#include "AndroidApp.h"
 
 std::unique_ptr<Application> Application::s_instance = nullptr;
 
-Application::Application(struct android_app *app)
+AndroidApp::AndroidApp(struct android_app *app)
     : m_app(app), m_graphicsDevice(new GraphicsDevice(app->window))
 {
 }
 
-Application::~Application()
+AndroidApp::~AndroidApp()
 {
 }
 
-void Application::initialize(struct android_app *app)
+void AndroidApp::initialize(struct android_app *app)
 {
     // The following function call is required to ensure glue code isn't stripped.
     app_dummy();
 
-    Application::s_instance = std::unique_ptr<Application>(new Application(app));
-    app->onAppCmd           = Application::onAppCommand;
-    app->onInputEvent       = Application::onInputEvent;
-
-    LOGI("Application initialized!");
+    AndroidApp::s_instance  = std::unique_ptr<AndroidApp>(new AndroidApp(app));
+    app->onAppCmd           = AndroidApp::onAppCommand;
+    app->onInputEvent       = AndroidApp::onInputEvent;
 }
 
-void Application::mainLoop()
+void AndroidApp::mainLoop()
 {
-    LOGI("Application is starting main loop!");
-
     volatile bool isDestroyRequested = false;
     while (!isDestroyRequested)
     {
@@ -61,41 +57,37 @@ void Application::mainLoop()
     }
 }
 
-void Application::onAppCommand(struct android_app *app, int32_t cmd)
+void AndroidApp::onAppCommand(struct android_app *app, int32_t cmd)
 {
-    auto application = Application::instance();
-    
+    auto androidApp = AndroidApp::instance();
+
     switch (cmd)
     {
     case APP_CMD_INIT_WINDOW:
-        if (app->window)
-        {
-            application->graphicsDevice()->initialize();
-        }
+        androidApp->graphicsDevice()->initialize();
         break;
     case APP_CMD_TERM_WINDOW:
-        if (app->window)
-        {
-            application->graphicsDevice()->finalize();
-        }
+        androidApp->graphicsDevice()->finalize();
         break;
     default:
         break;
     }
 }
 
-int32_t Application::onInputEvent(struct android_app *app, AInputEvent *inputEvent)
+int32_t AndroidApp::onInputEvent(struct android_app *app, AInputEvent *inputEvent)
 {
-    // auto application = Application::instance();
+    // auto androidApp = AndroidApp::instance();
 
-    if (AInputEvent_getType(inputEvent) == AINPUT_EVENT_TYPE_KEY)
+    if (AInputEvent_getType(inputEvent) == AINPUT_EVENT_TYPE_KEY &&
+        AKeyEvent_getKeyCode(inputEvent) == AKEYCODE_BACK)
     {
-        if (AKeyEvent_getKeyCode(inputEvent) == AKEYCODE_BACK)
-        {
-            LOGI("Native activity finish request.");
-            ANativeActivity_finish(app->activity);
-        }
+        ANativeActivity_finish(app->activity);
+        return 1;
+    }
 
+    if (AInputEvent_getType(inputEvent) == AINPUT_EVENT_TYPE_MOTION)
+    {
+        // TODO: Handle touch event...
         return 1;
     }
 

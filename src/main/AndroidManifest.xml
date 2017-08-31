@@ -4,6 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0">
 
+    <!-- Make OpenGL ES 2.0 required -->
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
     <application

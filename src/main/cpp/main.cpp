@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "AndroidApp.h"
 
 /**
  * @brief The application entry point.
@@ -6,6 +6,6 @@
  */
 void android_main(struct android_app *app)
 {
-    Application::initialize(app);
-    Application::instance()->mainLoop();
+    AndroidApp::initialize(app);
+    AndroidApp::instance()->mainLoop();
 }
